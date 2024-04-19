@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TodoList</title>
+
+    <!-- cdn vue JS -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="./css/style.css">
+
+    <!-- BOOTSTRAP CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+</head>
+
+<body>
+
+    <div id="AppTodoList" class="d-flex p-0 container-fluid w-100 vh-100 border">
+
+
+
+
+        <header class="w-25 vh-100 border ms_bg_light_offwhite p-2">
+
+            <nav>
+
+                <ul class="d-flex justify-content-between align-items-center p-0 ms_ul_style_none py-3">
+                    <li class="d-flex align-items-center ps-4">
+
+                        <span class="ms_icon">
+                            <img src="https://img.freepik.com/free-photo/natures-beauty-reflected-tranquil-mountain-waters-generative-ai_188544-7867.jpg"
+                                alt="img">
+                        </span>
+
+                        <span class="px-2">Nome</span>
+                        <span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-chevron-down" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                    d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708" />
+                            </svg>
+                        </span>
+
+                    </li>
+                    <li>
+                        <span class="px-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                class="bi bi-bell" viewBox="0 0 16 16">
+                                <path
+                                    d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2M8 1.918l-.797.161A4 4 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4 4 0 0 0-3.203-3.92zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5 5 0 0 1 13 6c0 .88.32 4.2 1.22 6" />
+                            </svg>
+                        </span>
+
+                        <span class="pe-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                class="bi bi-columns" viewBox="0 0 16 16">
+                                <path
+                                    d="M0 2a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1zm8.5 0v8H15V2zm0 9v3H15v-3zm-1-9H1v3h6.5zM1 14h6.5V6H1z" />
+                            </svg>
+                        </span>
+
+                    </li>
+                </ul>
+
+                <ul class="ms_ul_style_none p-0">
+                    <li @click="openModalToAdd = true" class="ps-4 d-flex align-items-center py-2 ms_border_list_hover">
+                        <span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#dc4c3e"
+                                class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                                <path
+                                    d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z" />
+                            </svg>
+                            <span class="fw-bold px-2 ms_txt_dark_orange">Aggiungi attività</span>
+                        </span>
+                    </li>
+                    <li @click="openModalSearch = true" class="m-2 ps-4 ms_border_list_hover d-flex align-items-center py-2">
+                        <span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                                class="bi bi-search" viewBox="0 0 16 16">
+                                <path
+                                    d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+                            </svg>
+                            <span class="px-2">Cerca</span>
+                        </span>
+                    </li>
+                    <li class="m-2 ps-4 ms_border_list_hover d-flex justify-content-between align-items-center py-2">
+                        <span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                                class="bi bi-archive" viewBox="0 0 16 16">
+                                <path
+                                    d="M0 2a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1v7.5a2.5 2.5 0 0 1-2.5 2.5h-9A2.5 2.5 0 0 1 1 12.5V5a1 1 0 0 1-1-1zm2 3v7.5A1.5 1.5 0 0 0 3.5 14h9a1.5 1.5 0 0 0 1.5-1.5V5zm13-3H1v2h14zM5 7.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5" />
+                            </svg>
+                            <span class="px-2">In arrivo</span>
+                        </span>
+                        <span class="pe-4">
+                            0
+                        </span>
+                    </li>
+                    <li class="m-2 ps-4 ms_border_list_hover d-flex justify-content-between align-items-center py-2">
+                        <span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                                class="bi bi-calendar-date" viewBox="0 0 16 16">
+                                <path
+                                    d="M6.445 11.688V6.354h-.633A13 13 0 0 0 4.5 7.16v.695c.375-.257.969-.62 1.258-.777h.012v4.61zm1.188-1.305c.047.64.594 1.406 1.703 1.406 1.258 0 2-1.066 2-2.871 0-1.934-.781-2.668-1.953-2.668-.926 0-1.797.672-1.797 1.809 0 1.16.824 1.77 1.676 1.77.746 0 1.23-.376 1.383-.79h.027c-.004 1.316-.461 2.164-1.305 2.164-.664 0-1.008-.45-1.05-.82zm2.953-2.317c0 .696-.559 1.18-1.184 1.18-.601 0-1.144-.383-1.144-1.2 0-.823.582-1.21 1.168-1.21.633 0 1.16.398 1.16 1.23" />
+                                <path
+                                    d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z" />
+                            </svg>
+                            <span class="px-2">Oggi</span>
+                        </span>
+                        <span class="pe-4">
+                            0
+                        </span>
+                    </li>
+                    <li class="m-2 ps-4 ms_border_list_hover d-flex justify-content-between align-items-center py-2">
+                        <span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                                class="bi bi-calendar3" viewBox="0 0 16 16">
+                                <path
+                                    d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2M1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857z" />
+                                <path
+                                    d="M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2" />
+                            </svg>
+                            <span class="px-2">Prossime</span>
+                        </span>
+
+                    </li>
+                    <li class="m-2 ps-4 ms_border_list_hover d-flex justify-content-between align-items-center py-2">
+                        <span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                                class="bi bi-microsoft" viewBox="0 0 16 16">
+                                <path
+                                    d="M7.462 0H0v7.19h7.462zM16 0H8.538v7.19H16zM7.462 8.211H0V16h7.462zm8.538 0H8.538V16H16z" />
+                            </svg>
+                            <span class="px-2">Filtri ed etichette</span>
+                        </span>
+
+                    </li>
+
+                </ul>
+
+                <ul class="pt-4 ps-4 ms_ul_style_none">
+                    <li class="d-flex align-items-center justify-content-between">
+                        <span class="fw-bold">I miei progetti</span>
+                        <span class="me-4">
+                            <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                                    class="bi bi-plus" viewBox="0 0 16 16">
+                                    <path
+                                        d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+                                </svg>
+                            </span>
+                            <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor"
+                                    class="bi bi-chevron-right" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd"
+                                        d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708" />
+                                </svg>
+                            </span>
+
+
+                        </span>
+                    </li>
+                </ul>
+
+            </nav>
+
+        </header>
+        <main class="col-8 w-75 bg-light position_relative ">
+            <div @click="(openModalToAdd = false) (openModalSearch = false)" class="ms_tran_container">
+
+            </div>
+            <!-- div per il modale di aggiunta -->
+            <section>
+                <div v-show="openModalToAdd" class="ms_modal_add rounded-4">
+
+                    <div>
+                        <div>
+                            <input class="w-100 px-5 py-4 mt-2  border-0 fs-3" type="text" id="inserisciAttivita"
+                                placeholder="Nome dell'attività" aria-label="inserisciAttivita">
+                        </div>
+
+                        <span class="px-5">Descrizione</span>
+                        <div class="d-flex align-items-center px-5 gap-2 py-3">
+                            <button type="button" class="btn border">Data di scadenza</button>
+                            <button type="button" class="btn border">Priorità</button>
+                            <button type="button" class="btn border">Promemoria <span
+                                    class="bg-warning-subtle text-danger-emphasis px-1 rounded"><small>FAI
+                                        L'UPGRADE</small></span></button>
+                            <button type="button" class="btn border"><svg xmlns="http://www.w3.org/2000/svg" width="16"
+                                    height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
+                                    <path
+                                        d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3" />
+                                </svg></button>
+
+                        </div>
+                        <hr>
+                        <div class="d-flex justify-content-between align-items-center pb-4 pt-1">
+                            <div>
+                                <ul class="ms_ul_style_none d-flex align-items-center m-0 p-0 ps-4">
+                                    <li>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                            fill="currentColor" class="bi bi-archive" viewBox="0 0 16 16">
+                                            <path
+                                                d="M0 2a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1v7.5a2.5 2.5 0 0 1-2.5 2.5h-9A2.5 2.5 0 0 1 1 12.5V5a1 1 0 0 1-1-1zm2 3v7.5A1.5 1.5 0 0 0 3.5 14h9a1.5 1.5 0 0 0 1.5-1.5V5zm13-3H1v2h14zM5 7.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5" />
+                                        </svg>
+                                        <span class="px-2">In arrivo</span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
+                                            <path
+                                                d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
+                                        </svg>
+                                        </span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="pe-4">
+                                <button @click="openModalToAdd = false" type="button"
+                                    class="btn btn-light">Annulla</button>
+                                <button type="button" class="btn btn-danger ms-2">Aggiungi attività</button>
+
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </section>
+            <!-- /div per il modale di aggiunta -->
+
+            <!-- div per il modale di ricerca -->
+            <section>
+                <div v-show="openModalSearch" class="ms_modal_search rounded-4">
+
+                    <ul class="d-flex justify-content-between ms_ul_style_none align-items-center p-0 border-bottom">
+                        <li>
+                            <span class="ps-4 pe-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                                    class="bi bi-search" viewBox="0 0 16 16">
+                                    <path
+                                        d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+                                </svg>
+                            </span>
+
+                        </li>
+                        <li class="ms_style_search_modal">
+                            <input type="search" id="search" aria-label="search"
+                                placeholder="Cerca o digita un comando..." class="w-100 fs-4 border-0 py-3">
+                        </li>
+                        <li class="d-flex align-items-center">
+                            <span
+                                class="ms_letter_container bg-body-tertiary ms-3 d-flex justify-content-center align-items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor"
+                                    class="bi bi-command" viewBox="0 0 16 16">
+                                    <path
+                                        d="M3.5 2A1.5 1.5 0 0 1 5 3.5V5H3.5a1.5 1.5 0 1 1 0-3M6 5V3.5A2.5 2.5 0 1 0 3.5 6H5v4H3.5A2.5 2.5 0 1 0 6 12.5V11h4v1.5a2.5 2.5 0 1 0 2.5-2.5H11V6h1.5A2.5 2.5 0 1 0 10 3.5V5zm4 1v4H6V6zm1-1V3.5A1.5 1.5 0 1 1 12.5 5zm0 6h1.5a1.5 1.5 0 1 1-1.5 1.5zm-6 0v1.5A1.5 1.5 0 1 1 3.5 11z" />
+                                </svg>
+                            </span>
+                            <span
+                                class="bg-body-tertiary ms-1 me-4 fs-6 ms_letter_container d-flex justify-content-center align-items-center">F</span>
+                        </li>
+                    </ul>
+
+                    <div class="ms_overflow_scroll_serch">
+
+                        <span class="ps-4 text-secondary">Visti di recente</span>
+                        <ul class="p-0 ms_ul_style_none">
+
+                            <li 
+                            
+                            class="ps-4 pe-4 py-3 d-flex ms_hover_list_search justify-content-between align-items-center mt-3">
+                                <span class="d-flex align-items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                                        class="bi bi-calendar3" viewBox="0 0 16 16">
+                                        <path
+                                            d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2M1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857z" />
+                                        <path
+                                            d="M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2" />
+                                    </svg>
+                                    <span class="ms-3">
+                                        Prossime
+                                    </span>
+                                </span>
+                            </li>
+
+                            <li
+                                class="ps-4 pe-4 py-3 d-flex ms_hover_list_search justify-content-between align-items-center">
+                                <span class="d-flex align-items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                                        class="bi bi-calendar2-date" viewBox="0 0 16 16">
+                                        <path
+                                            d="M6.445 12.688V7.354h-.633A13 13 0 0 0 4.5 8.16v.695c.375-.257.969-.62 1.258-.777h.012v4.61zm1.188-1.305c.047.64.594 1.406 1.703 1.406 1.258 0 2-1.066 2-2.871 0-1.934-.781-2.668-1.953-2.668-.926 0-1.797.672-1.797 1.809 0 1.16.824 1.77 1.676 1.77.746 0 1.23-.376 1.383-.79h.027c-.004 1.316-.461 2.164-1.305 2.164-.664 0-1.008-.45-1.05-.82zm2.953-2.317c0 .696-.559 1.18-1.184 1.18-.601 0-1.144-.383-1.144-1.2 0-.823.582-1.21 1.168-1.21.633 0 1.16.398 1.16 1.23" />
+                                        <path
+                                            d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M2 2a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1z" />
+                                        <path
+                                            d="M2.5 4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H3a.5.5 0 0 1-.5-.5z" />
+                                    </svg>
+                                    <span class="ms-3">
+                                        Oggi
+                                    </span>
+                                </span>
+                            </li>
+
+                            <li
+                                class="ms_hover_list_search ps-4 pe-4 py-3 d-flex justify-content-between align-items-center border-bottom mb-3">
+                                <span class="d-flex align-items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                                        class="bi bi-archive" viewBox="0 0 16 16">
+                                        <path
+                                            d="M0 2a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1v7.5a2.5 2.5 0 0 1-2.5 2.5h-9A2.5 2.5 0 0 1 1 12.5V5a1 1 0 0 1-1-1zm2 3v7.5A1.5 1.5 0 0 0 3.5 14h9a1.5 1.5 0 0 0 1.5-1.5V5zm13-3H1v2h14zM5 7.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5" />
+                                    </svg>
+                                    <span class="ms-3">
+                                        In arrivo
+                                    </span>
+                                </span>
+                            </li>
+
+
+                        <span class="ps-4 text-secondary">Navigazione</span>
+                        <ul class="p-0 ms_ul_style_none">
+
+                            <li
+                                class="ms_hover_list_search ps-4 pe-4 py-3 mt-3 d-flex justify-content-between align-items-center">
+                                <span class="d-flex align-items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                                        class="bi bi-house-door" viewBox="0 0 16 16">
+                                        <path
+                                            d="M8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4.5a.5.5 0 0 0 .5-.5v-4h2v4a.5.5 0 0 0 .5.5H14a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM2.5 14V7.707l5.5-5.5 5.5 5.5V14H10v-4a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v4z" />
+                                    </svg>
+                                    <span class="ms-3">
+                                        Vai alla home
+                                    </span>
+                                </span>
+                                <span class="d-flex">
+                                    <span
+                                        class="ms_letter_container bg-body-tertiary ms-3 d-flex justify-content-center align-items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13"
+                                            fill="currentColor" class="bi bi-command" viewBox="0 0 16 16">
+                                            <path
+                                                d="M3.5 2A1.5 1.5 0 0 1 5 3.5V5H3.5a1.5 1.5 0 1 1 0-3M6 5V3.5A2.5 2.5 0 1 0 3.5 6H5v4H3.5A2.5 2.5 0 1 0 6 12.5V11h4v1.5a2.5 2.5 0 1 0 2.5-2.5H11V6h1.5A2.5 2.5 0 1 0 10 3.5V5zm4 1v4H6V6zm1-1V3.5A1.5 1.5 0 1 1 12.5 5zm0 6h1.5a1.5 1.5 0 1 1-1.5 1.5zm-6 0v1.5A1.5 1.5 0 1 1 3.5 11z" />
+                                        </svg>
+                                    </span>
+                                    <span
+                                        class="bg-body-tertiary ms-2 fs-6 ms_letter_container d-flex justify-content-center align-items-center">F</span>
+                                </span>
+
+                            </li>
+
+                            <li
+                                class="ms_hover_list_search ps-4 pe-4 py-3 d-flex justify-content-between align-items-center">
+                                <span class="d-flex align-items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                                        class="bi bi-archive" viewBox="0 0 16 16">
+                                        <path
+                                            d="M0 2a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1v7.5a2.5 2.5 0 0 1-2.5 2.5h-9A2.5 2.5 0 0 1 1 12.5V5a1 1 0 0 1-1-1zm2 3v7.5A1.5 1.5 0 0 0 3.5 14h9a1.5 1.5 0 0 0 1.5-1.5V5zm13-3H1v2h14zM5 7.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5" />
+                                    </svg>
+                                    <span class="ms-3">
+                                        Vai a in arrivo
+                                    </span>
+                                </span>
+                                <span class="d-flex">
+                                    <span
+                                        class="ms_letter_container bg-body-tertiary ms-3 d-flex justify-content-center align-items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13"
+                                            fill="currentColor" class="bi bi-command" viewBox="0 0 16 16">
+                                            <path
+                                                d="M3.5 2A1.5 1.5 0 0 1 5 3.5V5H3.5a1.5 1.5 0 1 1 0-3M6 5V3.5A2.5 2.5 0 1 0 3.5 6H5v4H3.5A2.5 2.5 0 1 0 6 12.5V11h4v1.5a2.5 2.5 0 1 0 2.5-2.5H11V6h1.5A2.5 2.5 0 1 0 10 3.5V5zm4 1v4H6V6zm1-1V3.5A1.5 1.5 0 1 1 12.5 5zm0 6h1.5a1.5 1.5 0 1 1-1.5 1.5zm-6 0v1.5A1.5 1.5 0 1 1 3.5 11z" />
+                                        </svg>
+                                    </span>
+                                    <span
+                                        class="bg-body-tertiary ms-2 fs-6 ms_letter_container d-flex justify-content-center align-items-center">F</span>
+                                </span>
+
+                            </li>
+
+                            <li
+                                class="ps-4 pe-4 py-3 d-flex ms_hover_list_search justify-content-between align-items-center">
+                                <span class="d-flex align-items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                                        class="bi bi-calendar2-date" viewBox="0 0 16 16">
+                                        <path
+                                            d="M6.445 12.688V7.354h-.633A13 13 0 0 0 4.5 8.16v.695c.375-.257.969-.62 1.258-.777h.012v4.61zm1.188-1.305c.047.64.594 1.406 1.703 1.406 1.258 0 2-1.066 2-2.871 0-1.934-.781-2.668-1.953-2.668-.926 0-1.797.672-1.797 1.809 0 1.16.824 1.77 1.676 1.77.746 0 1.23-.376 1.383-.79h.027c-.004 1.316-.461 2.164-1.305 2.164-.664 0-1.008-.45-1.05-.82zm2.953-2.317c0 .696-.559 1.18-1.184 1.18-.601 0-1.144-.383-1.144-1.2 0-.823.582-1.21 1.168-1.21.633 0 1.16.398 1.16 1.23" />
+                                        <path
+                                            d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M2 2a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1z" />
+                                        <path
+                                            d="M2.5 4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H3a.5.5 0 0 1-.5-.5z" />
+                                    </svg>
+                                    <span class="ms-3">
+                                        Vai a Oggi
+                                    </span>
+                                </span>
+                                <span class="d-flex">
+                                    <span
+                                        class="ms_letter_container bg-body-tertiary ms-3 d-flex justify-content-center align-items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13"
+                                            fill="currentColor" class="bi bi-command" viewBox="0 0 16 16">
+                                            <path
+                                                d="M3.5 2A1.5 1.5 0 0 1 5 3.5V5H3.5a1.5 1.5 0 1 1 0-3M6 5V3.5A2.5 2.5 0 1 0 3.5 6H5v4H3.5A2.5 2.5 0 1 0 6 12.5V11h4v1.5a2.5 2.5 0 1 0 2.5-2.5H11V6h1.5A2.5 2.5 0 1 0 10 3.5V5zm4 1v4H6V6zm1-1V3.5A1.5 1.5 0 1 1 12.5 5zm0 6h1.5a1.5 1.5 0 1 1-1.5 1.5zm-6 0v1.5A1.5 1.5 0 1 1 3.5 11z" />
+                                        </svg>
+                                    </span>
+                                    <span
+                                        class="bg-body-tertiary ms-2 fs-6 ms_letter_container d-flex justify-content-center align-items-center">F</span>
+                                </span>
+
+                            </li>
+
+                            <li 
+                            
+                            class="ps-4 pe-4 py-3 d-flex ms_hover_list_search justify-content-between align-items-center">
+                                <span class="d-flex align-items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                                        class="bi bi-calendar3" viewBox="0 0 16 16">
+                                        <path
+                                            d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2M1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857z" />
+                                        <path
+                                            d="M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2" />
+                                    </svg>
+                                    <span class="ms-3">
+                                        Vai a Prossime
+                                    </span>
+                                </span>
+                                <span class="d-flex">
+                                    <span
+                                        class="ms_letter_container bg-body-tertiary ms-3 d-flex justify-content-center align-items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13"
+                                            fill="currentColor" class="bi bi-command" viewBox="0 0 16 16">
+                                            <path
+                                                d="M3.5 2A1.5 1.5 0 0 1 5 3.5V5H3.5a1.5 1.5 0 1 1 0-3M6 5V3.5A2.5 2.5 0 1 0 3.5 6H5v4H3.5A2.5 2.5 0 1 0 6 12.5V11h4v1.5a2.5 2.5 0 1 0 2.5-2.5H11V6h1.5A2.5 2.5 0 1 0 10 3.5V5zm4 1v4H6V6zm1-1V3.5A1.5 1.5 0 1 1 12.5 5zm0 6h1.5a1.5 1.5 0 1 1-1.5 1.5zm-6 0v1.5A1.5 1.5 0 1 1 3.5 11z" />
+                                        </svg>
+                                    </span>
+                                    <span
+                                        class="bg-body-tertiary ms-2 fs-6 ms_letter_container d-flex justify-content-center align-items-center">F</span>
+                                </span>
+
+                            </li>
+
+                            <li
+                                class="ps-4 pe-4 py-3 d-flex ms_hover_list_search justify-content-between align-items-center">
+                                <span class="d-flex align-items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                                        class="bi bi-app-indicator" viewBox="0 0 16 16">
+                                        <path
+                                            d="M5.5 2A3.5 3.5 0 0 0 2 5.5v5A3.5 3.5 0 0 0 5.5 14h5a3.5 3.5 0 0 0 3.5-3.5V8a.5.5 0 0 1 1 0v2.5a4.5 4.5 0 0 1-4.5 4.5h-5A4.5 4.5 0 0 1 1 10.5v-5A4.5 4.5 0 0 1 5.5 1H8a.5.5 0 0 1 0 1z" />
+                                        <path d="M16 3a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+                                    </svg>
+                                    <span class="ms-3">
+                                        Vai a Filtri ed etichette
+                                    </span>
+                                </span>
+                                <span class="d-flex">
+                                    <span
+                                        class="ms_letter_container bg-body-tertiary ms-3 d-flex justify-content-center align-items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13"
+                                            fill="currentColor" class="bi bi-command" viewBox="0 0 16 16">
+                                            <path
+                                                d="M3.5 2A1.5 1.5 0 0 1 5 3.5V5H3.5a1.5 1.5 0 1 1 0-3M6 5V3.5A2.5 2.5 0 1 0 3.5 6H5v4H3.5A2.5 2.5 0 1 0 6 12.5V11h4v1.5a2.5 2.5 0 1 0 2.5-2.5H11V6h1.5A2.5 2.5 0 1 0 10 3.5V5zm4 1v4H6V6zm1-1V3.5A1.5 1.5 0 1 1 12.5 5zm0 6h1.5a1.5 1.5 0 1 1-1.5 1.5zm-6 0v1.5A1.5 1.5 0 1 1 3.5 11z" />
+                                        </svg>
+                                    </span>
+                                    <span
+                                        class="bg-body-tertiary ms-2 fs-6 ms_letter_container d-flex justify-content-center align-items-center">F</span>
+                                </span>
+
+                            </li>
+
+                            <li
+                                class="ps-4 pe-4 py-3 d-flex ms_hover_list_search justify-content-between align-items-center">
+                                <span class="d-flex align-items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                                        class="bi bi-check-circle" viewBox="0 0 16 16">
+                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                                        <path
+                                            d="m10.97 4.97-.02.022-3.473 4.425-2.093-2.094a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05" />
+                                    </svg>
+                                    <span class="ms-3">
+                                        Vai a Complretare
+                                    </span>
+                                </span>
+                                <span class="d-flex">
+                                    <span
+                                        class="ms_letter_container bg-body-tertiary ms-3 d-flex justify-content-center align-items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13"
+                                            fill="currentColor" class="bi bi-command" viewBox="0 0 16 16">
+                                            <path
+                                                d="M3.5 2A1.5 1.5 0 0 1 5 3.5V5H3.5a1.5 1.5 0 1 1 0-3M6 5V3.5A2.5 2.5 0 1 0 3.5 6H5v4H3.5A2.5 2.5 0 1 0 6 12.5V11h4v1.5a2.5 2.5 0 1 0 2.5-2.5H11V6h1.5A2.5 2.5 0 1 0 10 3.5V5zm4 1v4H6V6zm1-1V3.5A1.5 1.5 0 1 1 12.5 5zm0 6h1.5a1.5 1.5 0 1 1-1.5 1.5zm-6 0v1.5A1.5 1.5 0 1 1 3.5 11z" />
+                                        </svg>
+                                    </span>
+                                    <span
+                                        class="bg-body-tertiary ms-2 fs-6 ms_letter_container d-flex justify-content-center align-items-center">F</span>
+                                </span>
+
+                            </li>
+
+                            <li
+                                class="ps-4 pe-4 py-3 d-flex ms_hover_list_search justify-content-between align-items-center">
+                                <span class="d-flex align-items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                                        class="bi bi-clipboard-data" viewBox="0 0 16 16">
+                                        <path
+                                            d="M4 11a1 1 0 1 1 2 0v1a1 1 0 1 1-2 0zm6-4a1 1 0 1 1 2 0v5a1 1 0 1 1-2 0zM7 9a1 1 0 0 1 2 0v3a1 1 0 1 1-2 0z" />
+                                        <path
+                                            d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1z" />
+                                        <path
+                                            d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0z" />
+                                    </svg>
+                                    <span class="ms-3">
+                                        Vai all'attività
+                                    </span>
+                                </span>
+                                <span class="d-flex">
+                                    <span
+                                        class="ms_letter_container bg-body-tertiary ms-3 d-flex justify-content-center align-items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13"
+                                            fill="currentColor" class="bi bi-command" viewBox="0 0 16 16">
+                                            <path
+                                                d="M3.5 2A1.5 1.5 0 0 1 5 3.5V5H3.5a1.5 1.5 0 1 1 0-3M6 5V3.5A2.5 2.5 0 1 0 3.5 6H5v4H3.5A2.5 2.5 0 1 0 6 12.5V11h4v1.5a2.5 2.5 0 1 0 2.5-2.5H11V6h1.5A2.5 2.5 0 1 0 10 3.5V5zm4 1v4H6V6zm1-1V3.5A1.5 1.5 0 1 1 12.5 5zm0 6h1.5a1.5 1.5 0 1 1-1.5 1.5zm-6 0v1.5A1.5 1.5 0 1 1 3.5 11z" />
+                                        </svg>
+                                    </span>
+                                    <span
+                                        class="bg-body-tertiary ms-2 fs-6 ms_letter_container d-flex justify-content-center align-items-center">F</span>
+                                </span>
+
+                            </li>
+
+                            <li
+                                class="ps-4 pe-4 py-3 d-flex ms_hover_list_search justify-content-between align-items-center">
+                                <span class="d-flex align-items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                                        class="bi bi-list-check" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd"
+                                            d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5M3.854 2.146a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 1 1 .708-.708L2 3.293l1.146-1.147a.5.5 0 0 1 .708 0m0 4a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 1 1 .708-.708L2 7.293l1.146-1.147a.5.5 0 0 1 .708 0m0 4a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 0 1 .708-.708l.146.147 1.146-1.147a.5.5 0 0 1 .708 0" />
+                                    </svg>
+                                    <span class="ms-3">
+                                        Apri progetto
+                                    </span>
+                                </span>
+                                <span class="d-flex">
+                                    <span
+                                        class="ms_letter_container bg-body-tertiary ms-3 d-flex justify-content-center align-items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13"
+                                            fill="currentColor" class="bi bi-command" viewBox="0 0 16 16">
+                                            <path
+                                                d="M3.5 2A1.5 1.5 0 0 1 5 3.5V5H3.5a1.5 1.5 0 1 1 0-3M6 5V3.5A2.5 2.5 0 1 0 3.5 6H5v4H3.5A2.5 2.5 0 1 0 6 12.5V11h4v1.5a2.5 2.5 0 1 0 2.5-2.5H11V6h1.5A2.5 2.5 0 1 0 10 3.5V5zm4 1v4H6V6zm1-1V3.5A1.5 1.5 0 1 1 12.5 5zm0 6h1.5a1.5 1.5 0 1 1-1.5 1.5zm-6 0v1.5A1.5 1.5 0 1 1 3.5 11z" />
+                                        </svg>
+                                    </span>
+                                    <span
+                                        class="bg-body-tertiary ms-2 fs-6 ms_letter_container d-flex justify-content-center align-items-center">F</span>
+                                </span>
+
+                            </li>
+
+                            <li
+                                class="ps-4 pe-4 py-3 d-flex ms_hover_list_search justify-content-between align-items-center">
+                                <span class="d-flex align-items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                                        class="bi bi-distribute-vertical" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd"
+                                            d="M1 1.5a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 0-1h-13a.5.5 0 0 0-.5.5m0 13a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 0-1h-13a.5.5 0 0 0-.5.5" />
+                                        <path
+                                            d="M2 7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z" />
+                                    </svg>
+                                    <span class="ms-3">
+                                        Apri sezione
+                                    </span>
+                                </span>
+                                <span class="d-flex">
+                                    <span
+                                        class="ms_letter_container bg-body-tertiary ms-3 d-flex justify-content-center align-items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13"
+                                            fill="currentColor" class="bi bi-command" viewBox="0 0 16 16">
+                                            <path
+                                                d="M3.5 2A1.5 1.5 0 0 1 5 3.5V5H3.5a1.5 1.5 0 1 1 0-3M6 5V3.5A2.5 2.5 0 1 0 3.5 6H5v4H3.5A2.5 2.5 0 1 0 6 12.5V11h4v1.5a2.5 2.5 0 1 0 2.5-2.5H11V6h1.5A2.5 2.5 0 1 0 10 3.5V5zm4 1v4H6V6zm1-1V3.5A1.5 1.5 0 1 1 12.5 5zm0 6h1.5a1.5 1.5 0 1 1-1.5 1.5zm-6 0v1.5A1.5 1.5 0 1 1 3.5 11z" />
+                                        </svg>
+                                    </span>
+                                    <span
+                                        class="bg-body-tertiary ms-2 fs-6 ms_letter_container d-flex justify-content-center align-items-center">F</span>
+                                </span>
+
+                            </li>
+
+                            <li
+                                class="ps-4 pe-4 py-3 d-flex ms_hover_list_search justify-content-between align-items-center mb-3 border-bottom">
+                                <span class="d-flex align-items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-tag" viewBox="0 0 16 16">
+                                        <path d="M6 4.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m-1 0a.5.5 0 1 0-1 0 .5.5 0 0 0 1 0"/>
+                                        <path d="M2 1h4.586a1 1 0 0 1 .707.293l7 7a1 1 0 0 1 0 1.414l-4.586 4.586a1 1 0 0 1-1.414 0l-7-7A1 1 0 0 1 1 6.586V2a1 1 0 0 1 1-1m0 5.586 7 7L13.586 9l-7-7H2z"/>
+                                      </svg>
+                                    <span class="ms-3">
+                                        Apri etichetta
+                                    </span>
+                                </span>
+                                <span class="d-flex">
+                                    <span
+                                        class="ms_letter_container bg-body-tertiary ms-3 d-flex justify-content-center align-items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13"
+                                            fill="currentColor" class="bi bi-command" viewBox="0 0 16 16">
+                                            <path
+                                                d="M3.5 2A1.5 1.5 0 0 1 5 3.5V5H3.5a1.5 1.5 0 1 1 0-3M6 5V3.5A2.5 2.5 0 1 0 3.5 6H5v4H3.5A2.5 2.5 0 1 0 6 12.5V11h4v1.5a2.5 2.5 0 1 0 2.5-2.5H11V6h1.5A2.5 2.5 0 1 0 10 3.5V5zm4 1v4H6V6zm1-1V3.5A1.5 1.5 0 1 1 12.5 5zm0 6h1.5a1.5 1.5 0 1 1-1.5 1.5zm-6 0v1.5A1.5 1.5 0 1 1 3.5 11z" />
+                                        </svg>
+                                    </span>
+                                    <span
+                                        class="bg-body-tertiary ms-2 fs-6 ms_letter_container d-flex justify-content-center align-items-center">F</span>
+                                </span>
+
+                            </li>
+
+                        </ul>
+                        
+                        <span class="ps-4 text-secondary">Aggiungi</span>
+                        <ul class="p-0 ms_ul_style_none">
+
+                            <li
+                                class="ms_hover_list_search ps-4 pe-4 py-3 mt-3 d-flex justify-content-between align-items-center border-bottom">
+                                <span class="d-flex align-items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                                      </svg>
+                                    <span class="ms-3">
+                                        Aggiungi attività
+                                    </span>
+                                </span>
+                                <span class="d-flex">
+                                    <span
+                                        class="ms_letter_container bg-body-tertiary ms-3 d-flex justify-content-center align-items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13"
+                                            fill="currentColor" class="bi bi-command" viewBox="0 0 16 16">
+                                            <path
+                                                d="M3.5 2A1.5 1.5 0 0 1 5 3.5V5H3.5a1.5 1.5 0 1 1 0-3M6 5V3.5A2.5 2.5 0 1 0 3.5 6H5v4H3.5A2.5 2.5 0 1 0 6 12.5V11h4v1.5a2.5 2.5 0 1 0 2.5-2.5H11V6h1.5A2.5 2.5 0 1 0 10 3.5V5zm4 1v4H6V6zm1-1V3.5A1.5 1.5 0 1 1 12.5 5zm0 6h1.5a1.5 1.5 0 1 1-1.5 1.5zm-6 0v1.5A1.5 1.5 0 1 1 3.5 11z" />
+                                        </svg>
+                                    </span>
+                                    <span
+                                        class="bg-body-tertiary ms-2 fs-6 ms_letter_container d-flex justify-content-center align-items-center">F</span>
+                                </span>
+
+                            </li>
+
+                            <li
+                                class="ms_hover_list_search ps-4 pe-4 py-3 d-flex justify-content-between align-items-center">
+                                <span class="d-flex align-items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-person-plus" viewBox="0 0 16 16">
+                                        <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H1s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C9.516 10.68 8.289 10 6 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/>
+                                        <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5"/>
+                                      </svg>
+                                    <span class="ms-3">
+                                        Condividi progetto
+                                    </span>
+                                </span>
+                                <span class="d-flex">
+                                    <span
+                                        class="ms_letter_container bg-body-tertiary ms-3 d-flex justify-content-center align-items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13"
+                                            fill="currentColor" class="bi bi-command" viewBox="0 0 16 16">
+                                            <path
+                                                d="M3.5 2A1.5 1.5 0 0 1 5 3.5V5H3.5a1.5 1.5 0 1 1 0-3M6 5V3.5A2.5 2.5 0 1 0 3.5 6H5v4H3.5A2.5 2.5 0 1 0 6 12.5V11h4v1.5a2.5 2.5 0 1 0 2.5-2.5H11V6h1.5A2.5 2.5 0 1 0 10 3.5V5zm4 1v4H6V6zm1-1V3.5A1.5 1.5 0 1 1 12.5 5zm0 6h1.5a1.5 1.5 0 1 1-1.5 1.5zm-6 0v1.5A1.5 1.5 0 1 1 3.5 11z" />
+                                        </svg>
+                                    </span>
+                                    <span
+                                        class="bg-body-tertiary ms-2 fs-6 ms_letter_container d-flex justify-content-center align-items-center">F</span>
+                                </span>
+
+                            </li>
+
+                            <li
+                                class="ms_hover_list_search ps-4 pe-4 py-3 d-flex justify-content-between align-items-center border-bottom">
+                                <span class="d-flex align-items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-plus-square" viewBox="0 0 16 16">
+                                        <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
+                                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                                      </svg>
+                                    <span class="ms-3">
+                                        Duplica progetto
+                                    </span>
+                                </span>
+                                <span class="d-flex">
+                                    <span
+                                        class="ms_letter_container bg-body-tertiary ms-3 d-flex justify-content-center align-items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13"
+                                            fill="currentColor" class="bi bi-command" viewBox="0 0 16 16">
+                                            <path
+                                                d="M3.5 2A1.5 1.5 0 0 1 5 3.5V5H3.5a1.5 1.5 0 1 1 0-3M6 5V3.5A2.5 2.5 0 1 0 3.5 6H5v4H3.5A2.5 2.5 0 1 0 6 12.5V11h4v1.5a2.5 2.5 0 1 0 2.5-2.5H11V6h1.5A2.5 2.5 0 1 0 10 3.5V5zm4 1v4H6V6zm1-1V3.5A1.5 1.5 0 1 1 12.5 5zm0 6h1.5a1.5 1.5 0 1 1-1.5 1.5zm-6 0v1.5A1.5 1.5 0 1 1 3.5 11z" />
+                                        </svg>
+                                    </span>
+                                    <span
+                                        class="bg-body-tertiary ms-2 fs-6 ms_letter_container d-flex justify-content-center align-items-center">F</span>
+                                </span>
+
+                            </li>
+
+                            <li
+                                class="ps-4 pe-4 py-3 d-flex ms_hover_list_search justify-content-between align-items-center">
+                                <span class="d-flex align-items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                                        class="bi bi-distribute-vertical" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd"
+                                            d="M1 1.5a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 0-1h-13a.5.5 0 0 0-.5.5m0 13a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 0-1h-13a.5.5 0 0 0-.5.5" />
+                                        <path
+                                            d="M2 7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z" />
+                                    </svg>
+                                    <span class="ms-3">
+                                        Aggiungi sezione
+                                    </span>
+                                </span>
+                                <span class="d-flex">
+                                    <span
+                                        class="ms_letter_container bg-body-tertiary ms-3 d-flex justify-content-center align-items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13"
+                                            fill="currentColor" class="bi bi-command" viewBox="0 0 16 16">
+                                            <path
+                                                d="M3.5 2A1.5 1.5 0 0 1 5 3.5V5H3.5a1.5 1.5 0 1 1 0-3M6 5V3.5A2.5 2.5 0 1 0 3.5 6H5v4H3.5A2.5 2.5 0 1 0 6 12.5V11h4v1.5a2.5 2.5 0 1 0 2.5-2.5H11V6h1.5A2.5 2.5 0 1 0 10 3.5V5zm4 1v4H6V6zm1-1V3.5A1.5 1.5 0 1 1 12.5 5zm0 6h1.5a1.5 1.5 0 1 1-1.5 1.5zm-6 0v1.5A1.5 1.5 0 1 1 3.5 11z" />
+                                        </svg>
+                                    </span>
+                                    <span
+                                        class="bg-body-tertiary ms-2 fs-6 ms_letter_container d-flex justify-content-center align-items-center">F</span>
+                                </span>
+
+                            </li>
+                    </div>
+                </div>
+
+            </section>
+            <!-- /div per il modale di ricerca -->
+
+        </main>
+
+
+
+
+
+
+
+
+    </div>
+
+
+    <script src="./js/script.js"></script>
+</body>
+
+</html>
